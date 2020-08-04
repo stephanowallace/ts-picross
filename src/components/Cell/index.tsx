@@ -2,6 +2,10 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { CellContext } from "../../contexts/CellType.context";
 
+interface ICellProps {
+  onChange: Function;
+}
+
 interface IContainerProps {
   state: CellType;
 }
@@ -25,7 +29,7 @@ const Container = styled.div<IContainerProps>`
   }
 `;
 
-const Cell = () => {
+const Cell: React.FC<ICellProps> = ({ onChange }) => {
   const { type } = useContext(CellContext);
   const [cellState, setCellState] = useState<CellType>("Void");
 
@@ -40,8 +44,13 @@ const Cell = () => {
     }
   };
 
+  const handleCellClick = () => {
+    onChange(type);
+    setCellState(type);
+  };
+
   return (
-    <Container onClick={() => setCellState(type)} state={cellState}>
+    <Container onClick={() => handleCellClick()} state={cellState}>
       {renderContent()}
     </Container>
   );
